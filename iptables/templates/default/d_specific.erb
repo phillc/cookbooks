@@ -1,0 +1,5 @@
+<% for ip, ports in @ips %>
+  <% for port in ports %>
+-A FWR -p tcp -s <%= ip %> --dport <%= port %> -j ACCEPT
+  <% end %>
+<% end %>

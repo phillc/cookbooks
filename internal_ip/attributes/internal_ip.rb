@@ -1,0 +1,1 @@
+set[:internal_ip] = network[:interfaces][:eth1][:addresses].detect{|k,v| v[:family] == "inet"}[0]

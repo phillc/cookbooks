@@ -6,12 +6,12 @@
 log_level          :info
 log_location       <%= @server_log %>
 ssl_verify_mode    :verify_none
-registration_url   "http://<%= @node[:chef][:server_fqdn] %>:4000"
-openid_url         "http://<%= @node[:chef][:server_fqdn] %>:4001"
-template_url       "http://<%= @node[:chef][:server_fqdn] %>:4000"
-remotefile_url     "http://<%= @node[:chef][:server_fqdn] %>:4000"
-search_url         "http://<%= @node[:chef][:server_fqdn] %>:4000"
-role_url           "http://<%= @node[:chef][:server_fqdn] %>:4000"
+registration_url   "https://<%= @node[:chef][:server_fqdn] %>"
+openid_url         "https://<%= @node[:chef][:server_fqdn] %>:444"
+template_url       "https://<%= @node[:chef][:server_fqdn] %>"
+remotefile_url     "https://<%= @node[:chef][:server_fqdn] %>"
+search_url         "https://<%= @node[:chef][:server_fqdn] %>"
+role_url           "https://<%= @node[:chef][:server_fqdn] %>"
 
 validation_token   "<%= @node[:chef][:server_token] %>"
 
@@ -26,7 +26,7 @@ role_path          "<%= @node[:chef][:serve_path] %>/roles"
 
 # See http://wiki.opscode.com/display/chef/Securing+Chef+Server
 # For more information on these settings.
-#authorized_openid_providers   [ "https://<%= @node[:chef][:server_fqdn]%>", "https://chef", "myopenid.com" ]
-#authorized_openid_identifiers [ "" ]
+authorized_openid_providers    <%= @node[:chef][:authorized_openid_providers].inspect %>
+authorized_openid_identifiers  <%= @node[:chef][:authorized_openid_identifiers].inspect %>
 
 Chef::Log::Formatter.show_time = <%= @show_time %>

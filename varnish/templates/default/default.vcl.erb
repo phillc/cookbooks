@@ -1,11 +1,63 @@
-backend default {
-        .host = "localhost";
-        .port = "8080";
+<% @app_servers.each do |node| %>
+backend <%= node[:name] %> {
+  .host = "<%= node[:fqdn] %>";
+  .port = "80";
+}
+<% end %>
+
+director app_servers round-robin {
+  <% @app_servers.each do |node| %>
+  {
+    .backend = <%= node[:name] %>;
+  }
+  <% end -%>
+}
+
+sub vcl_recv {
+  set req.backend = app_servers;
+  
+  if (req.request != "GET") {
+    pass;
+  } else if (req.url ~ "^/admin") {
+    pass;
+  }
+
+  unset req.http.cookie;
+  unset req.http.authorization;
+  lookup;
 }
 
 sub vcl_fetch {
-        # force minimum ttl of 120 seconds
-        if (obj.ttl < 120s) {
-                set obj.ttl = 120s;
-        }
+  # if varnish thinks its not cachable, dont cache it.
+  if (!obj.cacheable) {
+    pass;
+  }
+  # not in 200 range
+  if (obj.status >= 300) {
+    pass;
+  }
+
+  # pass through if cache-control set that way
+  if(obj.http.Cache-Control ~ "no-cache" || 
+     obj.http.Cache-Control ~ "private")  {
+       pass;
+  } 
+
+  # if max-age is set, we can cache
+  # obj.ttl is automatically set to max-age,
+  # but in order to get the client to check varnish
+  # set max-age to 5 minutes, then deliver to cache
+  if (obj.http.Cache-Control ~ "max-age") {
+    set obj.http.cache-control = "max-age=300";
+    unset obj.http.Set-Cookie;
+    deliver;
+  }
+  pass;
+}
+
+sub vcl_deliver {
+  # if it wasn't cached, age is 0
+  # if it was cached, age should be set to prevent
+  # age from being larger than max-age
+  set resp.http.age = "0";
 }

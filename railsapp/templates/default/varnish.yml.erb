@@ -1,0 +1,6 @@
+production:
+<% @cachers.each do |cacher| %>
+  <%= cacher["hostname"] %>:
+    port: 6082
+    host: <%= cacher["internal_ip"] %>
+<% end %>

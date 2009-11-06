@@ -1,0 +1,8 @@
+production: 
+  encoding: utf8
+  adapter: mysql
+  timeout: 5000
+  host: <%= @node[:railsapp][:db][:host] %>
+  database: <%= @node[:railsapp][:db][:database] %>
+  username: <%= @node[:railsapp][:db][:user] %>
+  password: <%= @node[:railsapp][:db][:password] %>

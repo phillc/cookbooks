@@ -19,11 +19,14 @@
 
 package "varnish"
 
-template "#{node[:varnish][:dir]}default.vcl" do
+app_servers = search(:node, "hostname:app*+AND+domain:#{node[:domain]}").collect{|n| {:name => n["hostname"], :fqdn => n["fqdn"]}}
+
+template "#{node[:varnish][:dir]}/default.vcl" do
   source "default.vcl.erb"
   owner "root"
   group "root"
   mode 0644
+  variables :app_servers => app_servers
 end
 
 template "#{node[:varnish][:default]}" do
@@ -35,10 +38,10 @@ end
 
 service "varnish" do
   supports :restart => true, :reload => true
-  action [ :enable, :start ]
+  action [ :enable, :restart ]
 end
 
 service "varnishlog" do
   supports :restart => true, :reload => true
-  action [ :enable, :start ]
+  action [ :enable, :restart ]
 end

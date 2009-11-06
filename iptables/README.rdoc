@@ -1,0 +1,15 @@
+sets iptables based on attributes
+
+ex.
+
+default_attributes(
+  "iptables" => {
+    "all" => [80, 443, 444],
+    "domain" => {
+      "app" => [80]
+    },
+    "internal" => [389],
+    "192.168.0.0" => [3000],
+    "192.168.0.1" => [3001]
+  }
+)

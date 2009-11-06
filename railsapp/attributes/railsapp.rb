@@ -1,0 +1,12 @@
+set_unless.railsapp[:app_name] = "app"
+set_unless.railsapp[:db][:host] = "localhost"
+set_unless.railsapp[:db][:database] = "railsdb"
+set_unless.railsapp[:db][:user] = "user"
+set_unless.railsapp[:db][:password] = "password"
+set_unless.railsapp[:user][:name] = "web"
+set_unless.railsapp[:repository] = "git://github.com/radiant/radiant.git"
+set_unless.railsapp[:branch] = "HEAD"
+set_unless.railsapp[:revision] = "HEAD"
+set_unless.railsapp[:environment] = "production"
+set_unless.railsapp[:migrate] = false
+set_unless.railsapp[:action] = "deploy"
