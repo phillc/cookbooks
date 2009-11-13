@@ -25,6 +25,7 @@ define :iptables_rule, :enable => true, :source => nil, :variables => {} do
     mode 0644
     variables params[:variables]
     notifies :run, resources(:execute => "rebuild-iptables")
+    backup false
     if params[:enable]
       action :create
     else

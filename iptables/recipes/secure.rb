@@ -1,8 +1,3 @@
-execute "clear" do
-  command "rm /etc/iptables.d/*"
-  action :run
-end
-
 include_recipe "iptables"
 
 ips = {}
