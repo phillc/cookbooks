@@ -31,3 +31,6 @@ set_unless[:nginx][:keepalive_timeout]  = 65
 set_unless[:nginx][:worker_processes]   = 1
 set_unless[:nginx][:worker_connections] = 1024
 set_unless[:nginx][:server_names_hash_bucket_size] = 64
+
+set_unless[:nginx][:use_www] = false
+set_unless[:nginx][:domain_name] = "example.com"
