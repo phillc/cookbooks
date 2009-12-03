@@ -17,7 +17,7 @@ if internal_ports
   end
 end
 
-(node[:iptables].reject{|k,v| k == "domain" || k == "internal"} || []).each do |ip, ports|
+(node[:iptables].reject{|k,v| k == "all" || k == "domain" || k == "internal"} || []).each do |ip, ports|
   ips[ip] = [] unless ips[ip]
   ips[ip].concat(ports)
 end
